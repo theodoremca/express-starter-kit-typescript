@@ -1,0 +1,11 @@
+node_modules
+functions/.env
+.env
+# Compiled JavaScript files
+function/lib/**/*.js
+function/lib/**/*.json
+function/lib/**/*.js.map
+function/lib/.env
+
+# TypeScript v1 declaration files
+function/typings/
