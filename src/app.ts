@@ -4,6 +4,7 @@ import {authenticateToken,
 } from "./middleware/auth";
 import express from "express";
 import routes from "./routes";
+
 import {errorHandler} from "./middleware/errors";
 
 import formData from "express-form-data";
@@ -15,10 +16,12 @@ export const devMode = true;
 const app = express();
 
 const {STAGING_DB, DEV_DB} = process.env;
-
+if (!STAGING_DB || !DEV_DB) {
+  console.log("=======⚠️⚠️⚠️ dev connection string not specified⚠️⚠️⚠️⚠️ ===========");
+}
 console.log({STAGING_DB, DEV_DB});
 
-connectToDb(""+DEV_DB).then(()=>{
+connectToDb(""+(DEV_DB|| "mongodb://localhost:27017/test")).then(()=>{
   app.use(express.json());
   app.use(express.urlencoded({extended: true}));
 
@@ -34,8 +37,6 @@ connectToDb(""+DEV_DB).then(()=>{
   app.use(formData.stream());
   // union the body and the files
   app.use(formData.union());
-
-  app.use(fileLinkOnBodyParser);
 
   app.get("/", (req, res )=>{
     console.info("Get / hello success");
@@ -67,7 +68,7 @@ connectToDb(""+DEV_DB).then(()=>{
 
   console.log({status, url, vUrl: url+versionPrefix});
 
-
+  app.use(fileLinkOnBodyParser);
   routes(app);
 
   // // middleware for error responses

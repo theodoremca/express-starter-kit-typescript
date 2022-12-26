@@ -5,11 +5,14 @@ import {v4} from "uuid";
 const defaultStorage = admin.storage();
 
 const {FB_STORAGE_BASE_PATH} = process.env;
-const bucket = defaultStorage.bucket(FB_STORAGE_BASE_PATH);
+
 // console.log({FIREBASE_STORAGE_BASE_PATH})
 
 export const uploadImageToFbStorage = async (file:ReadStream, name:string ) => {
   return new Promise( (resolve, reject) => {
+    if (!FB_STORAGE_BASE_PATH) resolve("FB_STORAGE_BASE_PATH UNDERDEFINE");
+    if (!FB_STORAGE_BASE_PATH) console.log("FB_STORAGE_BASE_PATH ENV IS UNDERDEFINE");
+    const bucket = defaultStorage.bucket(FB_STORAGE_BASE_PATH);
     if (!file) {
       return reject(new Error("No image file"));
     }

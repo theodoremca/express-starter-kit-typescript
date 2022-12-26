@@ -7,6 +7,8 @@ export const fileLinkOnBodyParser = (req: Request, res: Response, next: NextFunc
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const fileNames = Object.keys(req.files || {});
+  if (fileNames.length === 0) next();
+
   fileNames.forEach(
       (name) => uploadImageToFbStorage(req.body[name], name)
           .then((url) => req.body[name] = url).then(() => {
@@ -18,5 +20,4 @@ export const fileLinkOnBodyParser = (req: Request, res: Response, next: NextFunc
             message: err.message,
 
           })));
-  if (fileNames.length === 0) next();
 };

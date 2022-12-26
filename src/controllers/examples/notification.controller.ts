@@ -1,9 +1,9 @@
 
 
-import Model from "../models/notification.model";
+import Model from "../../models/example/notification.model";
 import {NextFunction, Request, Response} from "express-serve-static-core";
-import {createService, destroyService, indexService, showService, updateService} from "../services/model.services";
-import {sendSuccess} from "../response";
+import {createService, destroyService, indexService, showService, updateService} from "../../services/model.services";
+import {sendSuccess} from "../../response";
 
 
 export const index = (req: Request, res: Response, next: NextFunction) => {
