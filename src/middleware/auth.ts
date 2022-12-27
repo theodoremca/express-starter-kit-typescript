@@ -58,7 +58,7 @@ export const authenticateToken = (
 
 export const generateAccessToken = (ref: any) =>
   jwt.sign({data: ref},
-        process.env.TOKEN_SECRET as string,
+        process.env.TOKEN_SECRET as string || "avadore",
         {
           expiresIn: "7d",
           audience: "zeus",

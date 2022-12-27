@@ -92,6 +92,7 @@ export interface CreateOTPResult {
     otpMessage?: string;
 }
 
+
 // eslint-disable-next-line require-jsdoc
 class Options {
   // eslint-disable-next-line require-jsdoc
@@ -184,5 +185,64 @@ export const updateAuthUserService = (id:string, data:any) => {
         .catch((error:any) => {
           reject(error);
         });
+  });
+};
+
+
+export interface ForgetPasswordResult {
+  otp: string;
+    hashCode: string;
+    email: string;
+    query?: string;
+}
+
+interface ForgetPasswordParams {
+  email: string;
+  expirationInMinutes?: number|undefined;
+}
+export const forgetPasswordRequestService = (params: ForgetPasswordParams) =>{
+  return new Promise((resolve: (result: ForgetPasswordResult) => void, reject) => {
+    // Generate a 4 digit numeric OTP
+    const options = new Options(true, false, false, false);
+    try {
+      const otp = generate(4, options);
+      const email: string = params.email;
+      const ttl = (params.expirationInMinutes??3) * 60 * 1000; // 5 Minutes in miliseconds
+      const expires = Date.now() + ttl; // timestamp to 5 minutes in the future
+      const data = `${email}.${otp}.${expires}`; // phone.otp.expiry_timestamp
+      const hash = createHmac(
+          "sha256",
+          CRYPTO_KEY??"secret_key"
+      ).update(data).digest("hex"); // creating SHA256 hash of the data
+      const hashCode = `${hash}.${expires}`; // Hash.expires, format to send to the user
+      // you have to implement the function to send SMS yourself. For demo purpose. let's assume it's called sendSMS
+      // sendSMS(phone, `Your OTP is ${otp}. it will expire in 5 minutes`);
+      const query = `?code=${otp}&${hashCode}&expires=${params.expirationInMinutes}minutes`;
+      console.log({otp});
+
+      resolve({otp, hashCode, email, query});
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+
+export const resetPasswordService = (params:ForgetPasswordResult) => {
+  // Separate Hash value and expires from the hash returned from the user
+  return new Promise((resolve:(result: string) => void, reject) => {
+    const [hashValue, expires] = params.hashCode.split(".");
+
+    // Check if expiry time has passed
+    const now = Date.now();
+    if (now > parseInt(expires)) reject( new Error("OTP Expired"));
+    const data = `${params.email}.${params.otp}.${expires}`;
+    const newCalculatedHash = createHmac("sha256", CRYPTO_KEY??"secret_key")
+        .update(data)
+        .digest("hex");
+    if (newCalculatedHash === hashValue) {
+      resolve(params.email);
+    }
+    reject( new Error("Invalid OTP"));
   });
 };

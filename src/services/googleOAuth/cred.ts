@@ -1,0 +1,2 @@
+export const credentials = {
+  "web": {"client_id": "456870775571-6t038498tg668jna73djdhb72mm1gu54.apps.googleusercontent.com", "project_id": "node-mailer-372922", "auth_uri": "https://accounts.google.com/o/oauth2/auth", "token_uri": "https://oauth2.googleapis.com/token", "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs", "client_secret": "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", "redirect_uris": ["https://developers.google.com/oauthplayground"]}};

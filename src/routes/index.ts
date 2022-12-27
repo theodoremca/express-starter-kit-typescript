@@ -13,7 +13,7 @@ export default (app: Express) => {
   app.get(versionPrefix +"/users" + "/auth", getAuthUser);
 
   app.post(versionPrefix +"/users" + "/login", login);
-  app.post(versionPrefix +"/users" + "/signUp", signUp);
+  app.post(versionPrefix +"/users" + "/register", signUp);
   app.post(versionPrefix +"/users" + "/otpLogin", otpLogin);
   app.post(versionPrefix +"/users" + "/verifyOTP", verifyOTP);
   app.post(versionPrefix +"/users" + "/update", updateUser);
