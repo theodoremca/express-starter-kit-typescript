@@ -14,15 +14,15 @@ export const indexService = (Model:any) => {
 
 
 export const customService = (Model:any, query:object) => {
-    return new Promise((resolve, reject) => {
-        Model.find(query)
+  return new Promise((resolve, reject) => {
+    Model.find(query)
         .then((response:any) => {
-            resolve(response);
+          resolve(response);
         })
         .catch((error:any) => {
-            reject(error);
+          reject(error);
         });
-    });
+  });
 };
 
 export const showService = (Model:any, id:string) => {

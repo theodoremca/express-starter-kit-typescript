@@ -42,12 +42,12 @@ connectToDb(""+(DEV_DB|| "mongodb://localhost:27017")).then(()=>{
     console.info("Get / hello success");
     res.send("Welcome Theodoremca Starter-kit");
   });
-  // app.use(function(req, res, next) {
-  //   res.header("Access-Control-Allow-Origin", "*");
-  //   res.header("Access-Control-Allow-Methods", "GET,PUT,PATCH,POST,DELETE");
-  //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  //   next();
-  // });
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,PUT,PATCH,POST,DELETE");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
   // eslint-disablebrew tap heroku/brew && brew install heroku-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -57,6 +57,7 @@ connectToDb(""+(DEV_DB|| "mongodb://localhost:27017")).then(()=>{
       {url: versionPrefix + "/users/register", methods: ["POST"]},
       {url: versionPrefix + "/users/otpLogin", methods: ["POST"]},
       {url: versionPrefix + "/users/verifyOTP", methods: ["POST"]},
+      {url: versionPrefix + "/chatGPT/index", methods: ["POST"]},
     ],
   }));
 
@@ -67,8 +68,14 @@ connectToDb(""+(DEV_DB|| "mongodb://localhost:27017")).then(()=>{
 
 
   console.log({status, url, vUrl: url+versionPrefix});
-
-  app.use(fileLinkOnBodyParser);
+  // eslint-disablebrew tap heroku/brew && brew install heroku-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  app.use(unless(fileLinkOnBodyParser, {
+    path: [
+      {url: versionPrefix + "/chatGPT/index", methods: ["POST"]},
+    ],
+  }));
+  // app.use(fileLinkOnBodyParser);
   routes(app);
 
   // // middleware for error responses

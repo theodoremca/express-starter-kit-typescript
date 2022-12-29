@@ -3,6 +3,7 @@ import {Express} from "express";
 import {getAuthUser, getUser, login, otpLogin, signUp, updateUser, verifyOTP} from "../controllers/user.controller";
 import * as role from "../controllers/role.controller";
 import * as country from "../controllers/country.controller";
+import * as chatGPT from "../controllers/chatGPT.controller";
 
 
 import {versionPrefix} from "../app";
@@ -10,6 +11,8 @@ import {versionPrefix} from "../app";
 
 export default (app: Express) => {
   app.get(versionPrefix +"/country" + "/all", country.index);
+  // app.get(versionPrefix +"/chatGPT" + "/index", chatGPT.index);
+  app.post(versionPrefix +"/chatGPT" + "/index", chatGPT.index);
   app.get(versionPrefix +"/users" + "/auth", getAuthUser);
 
   app.post(versionPrefix +"/users" + "/login", login);
