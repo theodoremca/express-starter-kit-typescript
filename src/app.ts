@@ -21,7 +21,7 @@ if (!STAGING_DB || !DEV_DB) {
 }
 console.log({STAGING_DB, DEV_DB});
 
-connectToDb(""+(DEV_DB|| "mongodb://localhost:27017")).then(()=>{
+connectToDb("mongodb+srv://theodore:avadore@cluster0.h477mgk.mongodb.net/?retryWrites=true&w=majority").then(()=>{
   app.use(express.json());
   app.use(express.urlencoded({extended: true}));
 

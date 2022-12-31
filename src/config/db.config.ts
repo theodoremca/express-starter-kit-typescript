@@ -2,7 +2,7 @@ import mongoose, {ConnectOptions} from "mongoose";
 
 mongoose.Promise = global.Promise;
 const connectToDb = (dbUrl:string) => mongoose
-    .connect("mongodb://localhost:27017", {
+    .connect(dbUrl, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     } as ConnectOptions )
