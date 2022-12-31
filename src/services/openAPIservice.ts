@@ -3,7 +3,7 @@ export const chatService = (query: string) => {
   return new Promise(
       (resolve: (value: CreateCompletionResponse) => void, reject) => {
         const configuration = new Configuration({
-          apiKey: "cwzuEuvFNEDXc8XjhOSJ",
+          apiKey: "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",
         });
         const openai = new OpenAIApi(configuration);
         openai
@@ -21,4 +21,3 @@ export const chatService = (query: string) => {
       }
   );
 };
-// sk-qaMVokxfJIpgKFoUPvr1T3BlbkFJ
